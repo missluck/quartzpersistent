@@ -13,16 +13,6 @@
         <property name="password" value="1234"/>
     </bean>
 
-    <bean id="myJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-        <property name="jobClass" value="org.demo.quartzpersistent.job.MyJob"/>
-        <property name="durability" value="true"/>
-    </bean>
-
-    <bean id="myJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-        <property name="jobDetail" ref="myJobDetail"/>
-        <property name="cronExpression" value="0/2 * * * * ?"/>
-    </bean>
-
     <bean name="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="dataSource" ref="quartzDataSource"/>
         <property name="configLocation" value="classpath:context/quartz.properties"/>
@@ -30,18 +20,6 @@
         <property name="autoStartup" value="true"/>
         <!-- 每台集群机器部署应用的时候会更新触发器 -->
         <property name="overwriteExistingJobs" value="true"/>
-        <property name="jobDetails">
-            <list>
-                <ref bean="myJobDetail"/>
-            </list>
-        </property>
-        <property name="triggers">
-            <list>
-                <ref bean="myJobTrigger"/>
-            </list>
-        </property>
     </bean>
-
-
 
 </beans>
