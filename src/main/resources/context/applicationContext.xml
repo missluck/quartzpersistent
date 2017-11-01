@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- Spring只扫描service包,controller交给SpringMVC扫描,如果Spring全扫描会出现声明事务无法回滚问题。父子容器问题，自动注入后导致优先变高。 -->
+    <context:component-scan base-package="org.demo.*.manager"/>
+
+    <import resource="context-quartz.xml"/>
+
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="org.demo.*.job"/>
+
+    <bean id="quartzDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/quartzpersistent"/>
+        <property name="username" value="root"/>
+        <property name="password" value="1234"/>
+    </bean>
+
+    <bean id="myJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="org.demo.quartzpersistent.job.MyJob"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="myJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="myJobDetail"/>
+        <property name="cronExpression" value="0/2 * * * * ?"/>
+    </bean>
+
+    <bean name="quartzScheduler" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource" ref="quartzDataSource"/>
+        <property name="configLocation" value="classpath:context/quartz.properties"/>
+        <!-- 设置自动启动 -->
+        <property name="autoStartup" value="true"/>
+        <!-- 每台集群机器部署应用的时候会更新触发器 -->
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="jobDetails">
+            <list>
+                <ref bean="myJobDetail"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="myJobTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+
+
+</beans>
