@@ -53,7 +53,7 @@ public class QuartzManager {
     }
 
     public void modifyJobCron(String jobName, String triggerName, String cron) {
-        modifyJobCron(jobName, DEFAULT_JOBGROUP_NAME, jobName, DEFAULT_TRIGGERGROUP_NAME, cron);
+        modifyJobCron(jobName, DEFAULT_JOBGROUP_NAME, triggerName, DEFAULT_TRIGGERGROUP_NAME, cron);
     }
 
     public void modifyJobCron(String jobName, String jobGroupName, String triggerName, String triggerGroupName, String cron) {
